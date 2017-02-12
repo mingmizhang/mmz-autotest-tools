@@ -1,0 +1,31 @@
+  - name: check python version
+    shell: python -V
+    register: python_version
+
+  - name: download Python
+    get_url: url={{python_download_url}} dest=/tmp/Python.tgz
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: create the dir and change the permission of installed directory
+    file: path=/opt/Python-{{python_package_version}} state=directory mode=777
+
+  - name: untar python
+    shell: chdir=/tmp  tar zxvf Python.tgz -C /opt/Python-{{python_package_version}}
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: delete python dir
+    file: path=/usr/local/bin/python2.7 state=absent
+
+  - name: creates python dir
+    file: path=/usr/local/bin/python2.7 state=directory mode=777
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: install python
+    shell: chdir=/opt/Python-{{python_package_version}}/Python-2.7.10/ ./configure --prefix=/usr/local/bin/python2.7 && make && make install
+    when: python_version.stdout.find('{{python_package_version}}') == -1
+
+  - name: delete dir
+    file: path=/usr/local/bin/python state=absent
+
+  - name: link the python binary
+    shell: ln -sf /usr/local/bin/python2.7/bin/python /usr/bin/python

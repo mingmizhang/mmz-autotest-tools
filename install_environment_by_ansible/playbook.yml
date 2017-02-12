@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+
+  roles:
+    - ansible-package
+    #- ansible-python
+    - ansible-python-2.7.10
+    - ansible-pip
+    - ansible-maven
+    - ansible-pipInstall
+    - ansible-jenkinsDir
+

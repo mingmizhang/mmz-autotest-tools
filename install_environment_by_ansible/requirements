@@ -1,0 +1,7 @@
+首先，安装ansible,python;
+其次，Create the file `/etc/ansible/hosts` with the example content: 128.7.7.242 ansible_ssh_user=root ansible_ssh_pass=platform ansible_ssh_port=58422;
+然后，在.yml文件目录下执行ansible-playbook -i /etc/ansible/hosts playbook.yml即可；
+
+使用此脚本 最好先安装ansible-package，因为python版本路径改变很有可能导致脚本直接使用yum有问题
+
+

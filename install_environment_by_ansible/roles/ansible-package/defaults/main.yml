@@ -1,0 +1,5 @@
+yum_repo_dir: /etc/yum.repos.d
+maven_download_url: http://******/software/maven/apache-maven-3.3.9-bin.tar.gz
+maven_version: 3.3.9
+python_download_url: http://******/software/python/Python-2.7.3.tgz
+python_package_version: 2.7.3

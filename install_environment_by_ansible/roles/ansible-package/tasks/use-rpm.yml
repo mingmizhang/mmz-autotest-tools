@@ -1,0 +1,20 @@
+  - name: install yum required packages
+    yum: name={{ item }} state=present
+    with_items:
+      - git
+      - curl
+      - vsftpd
+      - wget
+      - mysql-server
+      - zlib-devel
+      - bzip2-devel
+      - openssl-devel
+      - xz-libs
+      - libffi-devel
+      - mysql
+      - mysql-devel
+      - httpd
+      - sshpass
+
+  - name: reload vsftpd
+    service: name=vsftpd state=reloaded

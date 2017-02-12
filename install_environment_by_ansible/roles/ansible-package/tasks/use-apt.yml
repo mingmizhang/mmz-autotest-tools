@@ -1,0 +1,19 @@
+  - name: add apt source list
+    apt_repository: repo='deb http://mirrors.163.com/ubuntu/ trusty main restricted universe multiverse' state=present
+
+  - name: update apt cache
+    apt: update_cache=true cache_valid_time=3600
+
+  - name: install apt required packages
+    apt: name={{ item }} state=present
+    with_items:
+      - python
+      - git
+      - curl
+      - vsftpd
+      - maven
+      - wget
+      - mysql-server
+
+  - name: reload vsftpd
+    service: name=vsftpd state=reloaded

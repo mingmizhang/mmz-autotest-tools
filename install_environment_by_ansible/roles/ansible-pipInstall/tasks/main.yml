@@ -1,0 +1,24 @@
+  - name: change the pip source
+    template: src=pip.conf.j2 dest=/etc/pip.conf
+
+  - name: install required packages by pip
+    pip: name={{ item }} executable=/usr/bin/pip
+    with_items:
+      - robotframework
+      - robotframework-httplibrary
+      - robotframework-sshlibrary
+      - simplejson
+      - PyMySQL
+      - requests
+      - beautifulsoup4
+      - robotframework-databaselibrary
+      - robotframework-pabot
+      - kazoo
+      - threadpool
+
+  - name: link the pybot binary
+    shell: ln -sf /usr/local/bin/python2.7/bin/pybot /usr/bin/pybot
+
+  - name: link the pabot binary
+    shell: ln -sf /usr/local/bin/python2.7/bin/pabot /usr/bin/pabot
+

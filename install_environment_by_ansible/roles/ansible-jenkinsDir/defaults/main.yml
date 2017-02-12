@@ -1,0 +1,6 @@
+root_home: /root
+jenkins_home: /data/home/jenkins
+index_user: indexdownload
+index_group: indexdownload
+jenkins_user: jenkins
+jenkins_group: jenkins

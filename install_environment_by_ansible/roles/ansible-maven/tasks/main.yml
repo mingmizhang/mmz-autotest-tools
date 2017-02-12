@@ -1,0 +1,11 @@
+  - name: download maven
+    get_url: url={{maven_download_url}} dest=/tmp
+
+  - name: untar maven
+    shell: chdir=/tmp  tar zxvf apache-maven-3.3.9-bin.tar.gz -C /opt
+
+  - name: delete maven dir
+    file: path=/usr/bin/mvn state=absent
+
+  - name: link the mvn binary
+    shell: ln -sf /opt/apache-maven-3.3.9/bin/mvn /usr/bin/mvn

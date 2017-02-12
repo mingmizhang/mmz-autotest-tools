@@ -1,0 +1,52 @@
+  - name: create group for testing
+    group: name={{item}} state=present
+    with_items:
+      - "{{index_group}}"
+      - "{{jenkins_group}}"
+
+  - name: create user for testing
+    user: name={{ item.name }} groups={{ item.groups }}
+    with_items:
+      - { name: "{{index_group}}", groups: "{{index_group}}" }
+      - { name: "{{jenkins_user}}", groups: "{{jenkins_group}}" }
+
+  - name: create webapps directory
+    file: path=/data/webapps/ state=directory mode=0777 owner=jenkins group=jenkins recurse=yes
+
+  - name: create jenkins directory
+    file: path=/data/home/jenkins state=directory mode=0755 owner=jenkins group=jenkins recurse=yes
+
+  - name: create other directories in webapps for testing
+    file: path=/data/{{item}} state=directory mode=0777 owner=jenkins group=jenkins recurse=yes
+    with_items:
+      - webapps/tar/
+      - appdatas/index/
+      - appdatas/report/
+
+  - name: create ftp directories for testing
+    file: path=/data/appdatas/ftp/ state=directory mode=0777 recurse=yes owner={{index_user}} group={{index_group}}
+
+  - name: create m2 directory
+    file: path=/{{item}}/.m2/ state=directory mode=0777 owner=jenkins group=jenkins recurse=yes
+    with_items:
+      - "{{jenkins_home}}"
+
+  - name: add the appenv
+    template: src=appenv.j2 dest=/data/webapps/appenv
+
+  - name: change the permission of appenv
+    file: path=/data/webapps/appenv mode=777 owner=jenkins group=jenkins
+
+  - name: add the maven settings xml
+    template: src=settings.xml.j2 dest=/data/home/jenkins/.m2/settings.xml
+    with_items:
+      - "{{jenkins_home}}"
+
+  - name: change the permission of settings.xml
+    file: path=/data/home/jenkins/.m2/settings.xml mode=755 owner=jenkins group=jenkins
+
+  - name: change the python path in yum
+    lineinfile: dest=/usr/bin/yum regexp='^#!/usr/bin/python.*$' line='#!/usr/bin/python2.6' state=present
+
+  - name: add the jenkins in sudoers
+    lineinfile: dest=/etc/sudoers state=present  line='jenkins  ALL=(root,nobody)  NOPASSWD:ALL' insertafter="^root.* ALL" validate='visudo -cf %s'

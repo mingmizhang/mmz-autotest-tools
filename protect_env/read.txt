@@ -1,0 +1,7 @@
+beta重启：
+./service.sh searcher beta
+./service.sh aggregator beta
+
+ppe重启：
+./service.sh searcher ppe mainshop
+./service.sh aggregator beta distshop
